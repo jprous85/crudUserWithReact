@@ -5,7 +5,7 @@ class UserList extends React.Component{
 
     state = {
         persons: []
-    }
+    };
 
     componentDidMount(){
         axios.get('http://localhost:8081/').then(res => {
@@ -19,7 +19,7 @@ class UserList extends React.Component{
             <div className="row m-3">
                 <div className="col-md-12 mb-2 mt-2">
                     <div className="float-right">
-                        <a  href="javascriot:void(0)"
+                        <a  href="/create"
                             className="btn btn-primary"
                         >Crear nuevo usuario</a>
                     </div>
@@ -42,7 +42,7 @@ class UserList extends React.Component{
                                         <td>{ person.email }</td>
                                         <td>{ person.created_at }</td>
                                         <td>
-                                            <a href="javascriot:void(0)"
+                                            <a href
                                             className="btn btn-warning mr-1">Editar</a>
                                             <a href="javascriot:void(0)"
                                             className="btn btn-danger ml-1">Eliminar</a>
