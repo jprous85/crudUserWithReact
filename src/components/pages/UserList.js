@@ -51,7 +51,6 @@ class UserList extends React.Component{
                                                     "person" : person
                                                 }
                                             }} >Editar</Link>
-
                                         </td>
                                     </tr>
                                     )
