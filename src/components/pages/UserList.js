@@ -43,12 +43,14 @@ class UserList extends React.Component{
                                         <td>{ person.email }</td>
                                         <td>{ person.created_at }</td>
                                         <td>
-                                            <Link to={{
+                                            <Link
+                                                className="btn btn-warning"
+                                                to={{
                                                 pathname: "/update",
                                                 state: {
                                                     "person" : person
                                                 }
-                                            }} >Editar_link</Link>
+                                            }} >Editar</Link>
 
                                         </td>
                                     </tr>
