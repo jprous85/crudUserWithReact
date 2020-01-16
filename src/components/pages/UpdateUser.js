@@ -1,50 +1,58 @@
 import React from "react";
-import axios from 'axios'
 import { Redirect } from "react-router-dom";
+import axios from 'axios'
 
-class CreateUser extends React.Component {
+class UpdateUser extends React.Component {
 
-    constructor(props) {
+    constructor(props){
         super(props);
+
         this.state = {
-            isRedirect: false
+            isRedirect: false,
+            person: []
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleSubmit(e) {
-
-        axios.post('http://localhost:8081/', {
-            "name": this.state.name,
-            "first_last_name": this.state.first_last_name,
-            "email": this.state.email
+    componentDidMount() {
+        const { person } = this.props.location.state;
+        this.setState({
+            person
         })
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        axios.put('http://localhost:8081/'+this.state.person.id,
+            this.state.person)
             .then(res => {
                 if (res.data.data === "ok") {
                     this.setState({ isRedirect: true })
                 }
-            });
-        e.preventDefault();
+            })
     }
 
     handleChange(e) {
         this.setState({
-            [e.target.name]: e.target.value
-        });
+            person: {
+                ... this.state.person,
+                [e.target.name]: e.target.value
+            }
+        })
     }
 
     render() {
         if (this.state.isRedirect) {
-            return <Redirect to={{ pathname: "/" }}/>
+            return <Redirect to={{ pathname: "/" }} />
         }
         return (
             <div className="row mt-5">
                 <div className="col-6 offset-3">
                     <div className="card">
                         <div className="card-header">
-                            <h6 className="text-muted">Create new user</h6>
+                            <h6 className="text-muted">Update user</h6>
                         </div>
                         <div className="card-body">
                             <form id="formNewUser" onSubmit={this.handleSubmit}>
@@ -55,7 +63,7 @@ class CreateUser extends React.Component {
                                            id="name"
                                            className="form-control"
                                            autoComplete="off"
-                                           value={this.setState.value}
+                                           value={this.state.person.name}
                                            onChange={this.handleChange}
                                     />
                                 </div>
@@ -66,7 +74,7 @@ class CreateUser extends React.Component {
                                            id="first_last_name"
                                            className="form-control"
                                            autoComplete="off"
-                                           value={this.setState.value}
+                                           value={this.state.person.first_last_name}
                                            onChange={this.handleChange}
                                     />
                                 </div>
@@ -77,12 +85,12 @@ class CreateUser extends React.Component {
                                            id="email"
                                            className="form-control"
                                            autoComplete="off"
-                                           value={this.setState.value}
+                                           value={this.state.person.email}
                                            onChange={this.handleChange}
                                     />
                                 </div>
                                 <div className="float-right">
-                                    <input type="submit" value="Create new user" className="btn btn-primary"/>
+                                    <input type="submit" value="Update user" className="btn btn-primary"/>
                                 </div>
                             </form>
                         </div>
@@ -91,6 +99,7 @@ class CreateUser extends React.Component {
             </div>
         )
     }
+
 }
 
-export default CreateUser
+export default UpdateUser

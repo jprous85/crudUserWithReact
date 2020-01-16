@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import {Link} from "react-router-dom";
 
 class UserList extends React.Component{
 
@@ -36,16 +37,19 @@ class UserList extends React.Component{
                         </thead>
                         <tbody>
                             {
-                                this.state.persons.map(person => 
+                                this.state.persons.map(person =>
                                     <tr>
                                         <td>{ person.name }</td>
                                         <td>{ person.email }</td>
                                         <td>{ person.created_at }</td>
                                         <td>
-                                            <a href
-                                            className="btn btn-warning mr-1">Editar</a>
-                                            <a href="javascriot:void(0)"
-                                            className="btn btn-danger ml-1">Eliminar</a>
+                                            <Link to={{
+                                                pathname: "/update",
+                                                state: {
+                                                    "person" : person
+                                                }
+                                            }} >Editar_link</Link>
+
                                         </td>
                                     </tr>
                                     )
