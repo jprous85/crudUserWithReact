@@ -37,7 +37,7 @@ class UpdateUser extends React.Component {
     handleChange(e) {
         this.setState({
             person: {
-                ... this.state.person,
+                ...this.state.person,
                 [e.target.name]: e.target.value
             }
         })
