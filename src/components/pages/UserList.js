@@ -13,23 +13,47 @@ class UserList extends React.Component {
         this.state = {
             persons: [],
             id: null,
-            show: false
+            show: false,
+            person: []
         };
-
-        this.handleShowModal = this.handleShowModal.bind(this);
-        this.handleHideModal = this.handleHideModal.bind(this)
     }
 
     componentDidMount() {
+        this._componentRequestData();
+    }
+
+    componentDidUpdate(){
+        this._componentRequestData();
+    }
+
+    _componentRequestData(){
         axios.get('http://localhost:8081/').then(res => {
             const persons = res.data;
             this.setState({persons})
-        })
+        });
     }
 
-    handleShowModal = () =>{ this.setState.show = true };
+    handleShowModal = (person) =>{
+        this.setState({
+            show: true,
+            person
+        });
+    };
 
-    handleHideModal = () => { this.setState.show = false };
+    handleHideModal = () => {
+        this.setState({
+            show: false
+        });
+    };
+
+    handleDeletePerson=()=>{
+        axios.delete('http://localhost:8081/'+this.state.person.id)
+            .then(res => {
+                if (res.data.data === 'ok') {
+                    this.handleHideModal();
+                }
+            });
+    };
 
     render() {
         return (
@@ -56,13 +80,12 @@ class UserList extends React.Component {
                             {
                                 this.state.persons.map(person =>
                                     <tr key={person.id}>
-
                                         <td>{person.name}</td>
                                         <td>{person.email}</td>
                                         <td>{person.created_at}</td>
                                         <td>
                                             <Link
-                                                className="btn btn-warning"
+                                                className="btn btn-warning mr-3"
                                                 to={{
                                                     pathname: "/update",
                                                     state: {
@@ -71,7 +94,7 @@ class UserList extends React.Component {
                                                 }}>Editar</Link>
                                             <Button
                                                className={"btn btn-danger"}
-                                               onClick={this.handleShowModal}>
+                                               onClick={(e)=>this.handleShowModal(person, e)}>
                                                 Eliminar
                                             </Button>
                                         </td>
@@ -86,12 +109,14 @@ class UserList extends React.Component {
                     <Modal.Header closeButton>
                         <Modal.Title>Modal heading</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                    <Modal.Body>
+
+                    </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={this.handleHideModal}>
                             Cerrar
                         </Button>
-                        <Button variant="primary" onClick={this.handleHideModal}>
+                        <Button variant="primary" onClick={this.handleDeletePerson}>
                             Eliminar
                         </Button>
                     </Modal.Footer>
